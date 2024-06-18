@@ -1,0 +1,25 @@
+## Interface: 30300
+## Title: BiS-Tooltip
+## Notes: v7.10. In game BiS lists and item tooltip enrichment.
+## Author: Hellixoid
+## Author: Dweem
+## Version: 7.10-3.3.5a-backport
+## SavedVariables: BisTooltipDB
+## OptionalDeps:
+
+# Libs.
+lib\LibStub\LibStub.lua
+lib\LibExtraTip\Load.xml
+lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
+lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
+lib\LibDBIcon-1.0\LibDBIcon-1.0.lua
+
+Bistooltip_classes.lua
+Bistooltip_wowtbc_items.lua
+Bistooltip_wowtbc_bislists.lua
+Bistooltip_wh_items.lua
+Bistooltip_wh_bislists.lua
+Core.lua
+Config.lua
+Bistooltip.lua
+Bislist.lua
