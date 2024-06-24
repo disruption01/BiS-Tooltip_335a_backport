@@ -1,0 +1,16 @@
+﻿## Interface: 30300
+## LoadOnDemand: 0
+## Title: Lib: AuraInfo-1.0
+## Notes: A library to return spell duration and debuff type of a spellID.
+## Author: Cyprias
+## SavedVariables: LAI_DB
+## OptionalDeps: LibStub, CallbackHandler-1.0
+## X-Curse-Packaged-Version: 1.0.7
+## X-Curse-Project-Name: LibAuraInfo-1.0
+## X-Curse-Project-ID: libaurainfo-1-0
+## X-Curse-Repository-ID: wow/libaurainfo-1-0/mainline
+
+LibStub\LibStub.lua
+CallbackHandler-1.0\CallbackHandler-1.0.xml
+
+LibAuraInfo-1.0\lib.xml

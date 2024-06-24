@@ -14,57 +14,69 @@ Bistooltip_classes_indexes = {
     ["Warrior"] = 10
 }
 
-Bistooltip_spec_icons = {};
-Bistooltip_spec_icons["Death knight"] = {};
-Bistooltip_spec_icons["Death knight"]["classIcon"] = 135771;
-Bistooltip_spec_icons["Death knight"]["Blood tank"] = 135770;
-Bistooltip_spec_icons["Death knight"]["Frost"] = 135773;
-Bistooltip_spec_icons["Death knight"]["Unholy"] = 135775;
-Bistooltip_spec_icons["Druid"] = {};
-Bistooltip_spec_icons["Druid"]["classIcon"] = 625999;
-Bistooltip_spec_icons["Druid"]["Balance"] = 136096;
-Bistooltip_spec_icons["Druid"]["Feral tank"] = 132276;
-Bistooltip_spec_icons["Druid"]["Feral dps"] = 132115;
-Bistooltip_spec_icons["Druid"]["Restoration"] = 136041;
-Bistooltip_spec_icons["Hunter"] = {};
-Bistooltip_spec_icons["Hunter"]["classIcon"] = 626000;
-Bistooltip_spec_icons["Hunter"]["Beast mastery"] = 132164;
-Bistooltip_spec_icons["Hunter"]["Marksmanship"] = 132222;
-Bistooltip_spec_icons["Hunter"]["Survival"] = 132215;
-Bistooltip_spec_icons["Mage"] = {};
-Bistooltip_spec_icons["Mage"]["classIcon"] = 626001;
-Bistooltip_spec_icons["Mage"]["Arcane"] = 135932;
-Bistooltip_spec_icons["Mage"]["Fire"] = 135810;
-Bistooltip_spec_icons["Mage"]["Fire FFB"] = 236217;
-Bistooltip_spec_icons["Mage"]["Frost"] = 135846;
-Bistooltip_spec_icons["Paladin"] = {};
-Bistooltip_spec_icons["Paladin"]["classIcon"] = 626003;
-Bistooltip_spec_icons["Paladin"]["Holy"] = 135920;
-Bistooltip_spec_icons["Paladin"]["Protection"] = 135893;
-Bistooltip_spec_icons["Paladin"]["Retribution"] = 135873;
-Bistooltip_spec_icons["Priest"] = {};
-Bistooltip_spec_icons["Priest"]["classIcon"] = 626004;
-Bistooltip_spec_icons["Priest"]["Discipline"] = 135987;
-Bistooltip_spec_icons["Priest"]["Holy"] = 135953;
-Bistooltip_spec_icons["Priest"]["Shadow"] = 136207;
-Bistooltip_spec_icons["Rogue"] = {};
-Bistooltip_spec_icons["Rogue"]["classIcon"] = 626005;
-Bistooltip_spec_icons["Rogue"]["Assassination"] = 132292;
-Bistooltip_spec_icons["Rogue"]["Combat"] = 132090;
-Bistooltip_spec_icons["Rogue"]["Subtlety"] = 132320;
-Bistooltip_spec_icons["Shaman"] = {};
-Bistooltip_spec_icons["Shaman"]["classIcon"] = 626006;
-Bistooltip_spec_icons["Shaman"]["Elemental"] = 136048;
-Bistooltip_spec_icons["Shaman"]["Enhancement"] = 136051;
-Bistooltip_spec_icons["Shaman"]["Restoration"] = 136052;
-Bistooltip_spec_icons["Warlock"] = {};
-Bistooltip_spec_icons["Warlock"]["classIcon"] = 626007;
-Bistooltip_spec_icons["Warlock"]["Affliction"] = 136145;
-Bistooltip_spec_icons["Warlock"]["Demonology"] = 136172;
-Bistooltip_spec_icons["Warlock"]["Destruction"] = 136186;
-Bistooltip_spec_icons["Warlock"]["Destruction fire"] = 136186;
-Bistooltip_spec_icons["Warrior"] = {};
-Bistooltip_spec_icons["Warrior"]["classIcon"] = 626008;
-Bistooltip_spec_icons["Warrior"]["Arms"] = 132292;
-Bistooltip_spec_icons["Warrior"]["Fury"] = 132347;
-Bistooltip_spec_icons["Warrior"]["Protection"] = 134952;
+Bistooltip_spec_icons = {
+    ["Death knight"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_DeathKnight_ClassIcon",
+        ["Blood tank"] = "Interface\\Icons\\Spell_Deathknight_BloodPresence",
+        ["Frost"] = "Interface\\Icons\\Spell_Deathknight_FrostPresence",
+        ["Unholy"] = "Interface\\Icons\\Spell_Deathknight_UnholyPresence",
+        ["Blood dps"] = "Interface\\Icons\\Spell_Deathknight_BloodPresence"
+    },
+    ["Druid"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Druid_ClassIcon",
+        ["Balance"] = "Interface\\Icons\\Spell_Nature_StarFall",
+        ["Feral tank"] = "Interface\\Icons\\Ability_Racial_BearForm",
+        ["Feral dps"] = "Interface\\Icons\\Ability_Druid_CatForm",
+        ["Restoration"] = "Interface\\Icons\\Spell_Nature_HealingTouch"
+    },
+    ["Hunter"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Hunter_ClassIcon",
+        ["Beast mastery"] = "Interface\\Icons\\Ability_Hunter_BeastTaming",
+        ["Marksmanship"] = "Interface\\Icons\\Ability_Marksmanship",
+        ["Survival"] = "Interface\\Icons\\Ability_Hunter_SurvivalInstincts"
+    },
+    ["Mage"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Mage_ClassIcon",
+        ["Arcane"] = "Interface\\Icons\\Spell_Holy_MagicalSentry",
+        ["Fire"] = "Interface\\Icons\\Spell_Fire_FireBolt02",
+        ["Fire FFB"] = "Interface\\Icons\\Spell_Fire_FlameBolt",
+        ["Frost"] = "Interface\\Icons\\Spell_Frost_FrostBolt02"
+    },
+    ["Paladin"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Paladin_ClassIcon",
+        ["Holy"] = "Interface\\Icons\\Spell_Holy_HolyBolt",
+        ["Protection"] = "Interface\\Icons\\Ability_Paladin_ShieldoftheTemplar",
+        ["Retribution"] = "Interface\\Icons\\Spell_Holy_AuraOfLight"
+    },
+    ["Priest"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Priest_ClassIcon",
+        ["Discipline"] = "Interface\\Icons\\Spell_Holy_PowerWordShield",
+        ["Holy"] = "Interface\\Icons\\Spell_Holy_GuardianSpirit",
+        ["Shadow"] = "Interface\\Icons\\Spell_Shadow_ShadowWordPain"
+    },
+    ["Rogue"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Rogue_ClassIcon",
+        ["Assassination"] = "Interface\\Icons\\Ability_Rogue_Eviscerate",
+        ["Combat"] = "Interface\\Icons\\Ability_BackStab",
+        ["Subtlety"] = "Interface\\Icons\\Ability_Ambush"
+    },
+    ["Shaman"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Shaman_ClassIcon",
+        ["Elemental"] = "Interface\\Icons\\Spell_Nature_Lightning",
+        ["Enhancement"] = "Interface\\Icons\\Spell_Nature_LightningShield",
+        ["Restoration"] = "Interface\\Icons\\Spell_Nature_MagicImmunity"
+    },
+    ["Warlock"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Warlock_ClassIcon",
+        ["Affliction"] = "Interface\\Icons\\Spell_Shadow_DeathCoil",
+        ["Demonology"] = "Interface\\Icons\\Spell_Shadow_Metamorphosis",
+        ["Destruction"] = "Interface\\Icons\\Spell_Shadow_RainOfFire",
+        ["Destruction fire"] = "Interface\\Icons\\Spell_Shadow_RainOfFire"
+    },
+    ["Warrior"] = {
+        ["classIcon"] = "Interface\\Icons\\Achievement_Warrior_ClassIcon",
+        ["Arms"] = "Interface\\Icons\\Ability_Warrior_SavageBlow",
+        ["Fury"] = "Interface\\Icons\\Ability_Warrior_InnerRage",
+        ["Protection"] = "Interface\\Icons\\Ability_Warrior_DefensiveStance"
+    }
+}

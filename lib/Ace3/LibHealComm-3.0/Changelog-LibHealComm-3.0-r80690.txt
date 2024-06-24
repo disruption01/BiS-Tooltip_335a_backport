@@ -1,0 +1,15 @@
+------------------------------------------------------------------------
+r80690 | xbeeps | 2008-08-19 16:29:15 -0400 (Tue, 19 Aug 2008) | 2 lines
+Changed paths:
+   M /trunk/LibHealComm-3.0/LibHealComm-3.0.lua
+
+LibHealComm-3.0:
+- Fix the minor problem that sometimes during start-up of a battleground the sender argument of a CHAT_MSG_ADDON does not contain the fully qualified name (including the realm) even though the player is from a different realm.
+------------------------------------------------------------------------
+r79995 | nightik | 2008-08-09 01:17:48 -0400 (Sat, 09 Aug 2008) | 2 lines
+Changed paths:
+   M /trunk/LibHealComm-3.0/LibHealComm-3.0.lua
+
+LibHealComm-3.0:
+- fix regular expression in getBaseHealSize() for ruRU spell tooltips.
+------------------------------------------------------------------------

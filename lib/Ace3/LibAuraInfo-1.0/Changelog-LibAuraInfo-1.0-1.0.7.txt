@@ -1,0 +1,42 @@
+------------------------------------------------------------------------
+r70 | cyprias | 2010-08-29 22:18:40 +0000 (Sun, 29 Aug 2010) | 3 lines
+Changed paths:
+   A /tags/1.0.7 (from /trunk:69)
+
+Tagged as 1.0.7
+- Unit events will only register if a addon has registered a callback. 
+- Minor changed to 7.
+------------------------------------------------------------------------
+r69 | cyprias | 2010-08-29 22:16:57 +0000 (Sun, 29 Aug 2010) | 2 lines
+Changed paths:
+   M /trunk/LibAuraInfo-1.0/LibAuraInfo-1.0.lua
+
+unit events will only register if a addon has registered a callback.
+Minor changed to 7.
+------------------------------------------------------------------------
+r68 | cyprias | 2010-08-03 23:21:55 +0000 (Tue, 03 Aug 2010) | 1 line
+Changed paths:
+   M /trunk
+   M /trunk/.pkgmeta
+   M /trunk/LibAuraInfo-1.0.toc
+
+Moved LibStub & CallbackHandler-1.0 to root folder.
+------------------------------------------------------------------------
+r66 | cyprias | 2010-08-03 22:52:51 +0000 (Tue, 03 Aug 2010) | 1 line
+Changed paths:
+   M /trunk/LibAuraInfo-1.0/LibAuraInfo-1.0.lua
+
+Changed minor to 6. There was a problem with the packager on 5.
+------------------------------------------------------------------------
+r64 | cyprias | 2010-08-03 20:01:00 +0000 (Tue, 03 Aug 2010) | 1 line
+Changed paths:
+   M /trunk/LibAuraInfo-1.0/LibAuraInfo-1.0.lua
+
+Changed minor version to 5.
+------------------------------------------------------------------------
+r63 | cyprias | 2010-07-24 02:29:52 +0000 (Sat, 24 Jul 2010) | 1 line
+Changed paths:
+   M /trunk/LibAuraInfo-1.0/spellIdData.lua
+
+Added more spells, updated duration times. yatta yatta yatta.
+------------------------------------------------------------------------

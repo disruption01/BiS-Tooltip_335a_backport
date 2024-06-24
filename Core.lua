@@ -1,5 +1,4 @@
 BistooltipAddon = LibStub("AceAddon-3.0"):NewAddon("Bis-Tooltip")
---local AceAddon =
 
 Bistooltip_char_equipment = {}
 
@@ -18,19 +17,28 @@ local function createEquipmentWatcher()
             flag = true
             local collection = {}
             for bag = 0, NUM_BAG_SLOTS do
-                for slot = 1, GetContainerNumSlots(bag) do
-                    local itemID = GetContainerItemID(bag, slot)
-                    if itemID ~= nil then
-                        collection[itemID] = 1
+                -- Wrath of the Lich King method to get container slots
+                local numSlots = GetContainerNumSlots(bag)
+                for slot = 1, numSlots do
+                    -- Wrath of the Lich King method to get item ID from a slot
+                    local itemLink = GetContainerItemLink(bag, slot)
+                    if itemLink then
+                        local itemID = tonumber(string.match(itemLink, "item:(%d+):"))
+                        if itemID then
+                            collection[itemID] = 1
+                        end
                     end
                 end
             end
-            for i=0,18 do
+
+            -- Check worn equipment
+            for i = 0, 18 do
                 local itemID = GetInventoryItemID("player", i)
-                if itemID ~= nil then
-                    collection[itemID] = 1
+                if itemID then
+                    collection[itemID] = 2
                 end
             end
+
             Bistooltip_char_equipment = collection
             flag = false
         end
@@ -40,7 +48,7 @@ end
 function BistooltipAddon:OnInitialize()
     createEquipmentWatcher()
     BistooltipAddon.AceAddonName = "Bis-Tooltip"
-    BistooltipAddon.AddonNameAndVersion = "Bis-Tooltip v7.10"
+    BistooltipAddon.AddonNameAndVersion = "Bis-Tooltip v7.42"
     BistooltipAddon:initConfig()
     BistooltipAddon:addMapIcon()
     BistooltipAddon:initBislists()

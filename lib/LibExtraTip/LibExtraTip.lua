@@ -1074,7 +1074,7 @@ function lib:GenerateTooltipMethodTable() -- Sets up hooks to give the quantity 
 
 		SetBagItem = function(self,bag,slot)
 			OnTooltipCleared(self)
-			local tex,q,l,_,r,loot = GetContainerItemInfo(bag,slot)
+			local tex,q,l,_,r,loot = C_Container.GetContainerItemInfo(bag,slot)
 			if tex then -- only process occupied slots
 				local reg = tooltipRegistry[self]
 				reg.ignoreOnCleared = true
