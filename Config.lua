@@ -6,12 +6,10 @@ local icon_loaded = false
 local icon_name = "BisTooltipIcon"
 
 local sources = {
-    --    wh = "wh",
     wowtbc = "wowtbc"
 }
 
 Bistooltip_source_to_url = {
-    --    ["wh"] = "wowhead.com/wotlk",
     ["wowtbc"] = "wowtbc.gg/wotlk"
 }
 
@@ -98,7 +96,7 @@ local configTable = {
             order = 4,
             desc = "Removes unselected specs from item tooltips",
             type = "multiselect",
-            values = nil,
+            values = {}, -- Initialize as an empty table
             set = function(info, key, val)
                 local ci, si = strsplit(":", key)
                 ci = tonumber(ci)
@@ -113,10 +111,10 @@ local configTable = {
                 si = tonumber(si)
                 local class_name = Bistooltip_classes[ci].name
                 local spec_name = Bistooltip_classes[ci].specs[si]
-                if (not BistooltipAddon.db.char.filter_specs[class_name]) then
+                if not BistooltipAddon.db.char.filter_specs[class_name] then
                     BistooltipAddon.db.char.filter_specs[class_name] = {}
                 end
-                if (BistooltipAddon.db.char.filter_specs[class_name][spec_name] == nil) then
+                if BistooltipAddon.db.char.filter_specs[class_name][spec_name] == nil then
                     BistooltipAddon.db.char.filter_specs[class_name][spec_name] = true
                 end
                 return BistooltipAddon.db.char.filter_specs[class_name][spec_name]
@@ -127,7 +125,7 @@ local configTable = {
             order = 5,
             desc = "Highlights selected spec in item tooltips",
             type = "multiselect",
-            values = nil,
+            values = {}, -- Initialize as an empty table
             set = function(info, key, val)
                 if val then
                     local ci, si = strsplit(":", key)
@@ -155,7 +153,7 @@ local configTable = {
 local function buildFilterSpecOptions()
     local filter_specs_options = {}
     for ci, class in ipairs(Bistooltip_classes) do
-        for si, spec in ipairs(Bistooltip_classes[ci].specs) do
+        for si, spec in ipairs(class.specs) do
             local option_val = "|T" .. Bistooltip_spec_icons[class.name][spec] .. ":16|t " .. class.name .. " " .. spec
             local option_key = ci .. ":" .. si
             filter_specs_options[option_key] = option_val
@@ -205,7 +203,7 @@ local function openSourceSelectDialog()
 end
 
 local function migrateAddonDB()
-    if not BistooltipAddon.db.char["version"] then
+    if not BistooltipAddon.db.char.version then
         BistooltipAddon.db.char.version = 6.1
         BistooltipAddon.db.char.highlight_spec = {}
         BistooltipAddon.db.char.filter_specs = {}
@@ -213,10 +211,12 @@ local function migrateAddonDB()
         BistooltipAddon.db.char.spec_index = 1
         BistooltipAddon.db.char.phase_index = 1
     end
-    if BistooltipAddon.db.char["data_source"] == nil then
-        BistooltipAddon.db.char.data_source = sources.wh
-        openSourceSelectDialog()
+
+    -- Set default data source to wowtbc if not already set
+    if BistooltipAddon.db.char.data_source == nil then
+        BistooltipAddon.db.char.data_source = "wowtbc"
     end
+
     if BistooltipAddon.db.char.version == 6.1 then
         BistooltipAddon.db.char.version = 6.2
         if BistooltipAddon.db.char.filter_specs["Death knight"] and
@@ -232,24 +232,27 @@ function BistooltipAddon:openConfigDialog()
         InterfaceOptionsFrame_Show()
     else
         InterfaceOptionsFrame_OpenToCategory(BistooltipAddon.AceAddonName)
-        InterfaceOptionsFrame_OpenToCategory(BistooltipAddon.AceAddonName)
     end
-    config_shown = not (config_shown)
+    config_shown = not config_shown
 end
 
 local function enableSpec(spec_name)
-
     if spec_name == sources.wowtbc then
-        Bistooltip_bislists = Bistooltip_wowtbc_bislists;
-        Bistooltip_items = Bistooltip_wowtbc_items;
-        Bistooltip_classes = Bistooltip_wowtbc_classes;
-        Bistooltip_phases = Bistooltip_wowtbc_phases;
-    elseif spec_name == sources.wh then
-        Bistooltip_bislists = Bistooltip_wh_bislists;
-        Bistooltip_items = Bistooltip_wh_items;
-        Bistooltip_classes = Bistooltip_wh_classes;
-        Bistooltip_phases = Bistooltip_wh_phases;
+        Bistooltip_bislists = Bistooltip_wowtbc_bislists
+        Bistooltip_items = Bistooltip_wowtbc_items
+        Bistooltip_classes = Bistooltip_wowtbc_classes
+        Bistooltip_phases = Bistooltip_wowtbc_phases
+    else
+        -- Handle unexpected spec_name
+        return
     end
+
+    -- Check if Bistooltip_phases is nil or not a table
+    if type(Bistooltip_phases) ~= "table" then
+        -- Handle the error or unexpected state
+        return
+    end
+
     Bistooltip_phases_string = ""
     for i, phase in ipairs(Bistooltip_phases) do
         if i ~= 1 then
@@ -303,16 +306,14 @@ function BistooltipAddon:changeSpec(spec_name)
 end
 
 function BistooltipAddon:initConfig()
-
     BistooltipAddon.db = LibStub("AceDB-3.0"):New("BisTooltipDB", db_defaults, "Default")
-
-    LibStub("AceConfig-3.0"):RegisterOptionsTable(BistooltipAddon.AceAddonName, configTable)
-    AceConfigDialog:AddToBlizOptions(BistooltipAddon.AceAddonName, BistooltipAddon.AceAddonName)
 
     migrateAddonDB()
 
-    Bistooltip_bislists = {};
-    Bistooltip_items = {};
+    enableSpec(BistooltipAddon.db.char.data_source)
 
-    enableSpec(BistooltipAddon.db.char["data_source"])
+    buildFilterSpecOptions() -- Ensure this function is called to populate values
+
+    LibStub("AceConfig-3.0"):RegisterOptionsTable(BistooltipAddon.AceAddonName, configTable)
+    AceConfigDialog:AddToBlizOptions(BistooltipAddon.AceAddonName, BistooltipAddon.AceAddonName)
 end

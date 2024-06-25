@@ -240,6 +240,10 @@ local function drawSpecData()
 end
 
 local function buildClassDict()
+    if not Bistooltip_classes or type(Bistooltip_classes) ~= "table" then
+        return
+    end
+
     class_options = {}
     for ci, class in ipairs(Bistooltip_classes) do
         local option_name = class.name
@@ -252,6 +256,10 @@ local function buildClassDict()
 end
 
 local function buildSpecsDict(class_i)
+    if not Bistooltip_classes or type(Bistooltip_classes) ~= "table" then
+        return
+    end
+
     spec_options = {}
     spec_options_to_spec = {}
     local class = Bistooltip_classes[class_i]
@@ -515,7 +523,7 @@ function BistooltipAddon:createMainFrame()
     -- Set the height of the noteLabel and align its text to the bottom
     noteLabel:SetHeight(reloadButton.frame:GetHeight())
     noteLabel:SetFullWidth(false)
-    noteLabel:SetJustifyH("LEFT")
+    -- noteLabel:SetJustifyH("LEFT")
 
     -- Adjust the noteLabel's text frame to position it at the bottom
     noteLabel.label:SetPoint("BOTTOM")
