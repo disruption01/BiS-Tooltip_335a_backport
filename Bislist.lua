@@ -365,7 +365,7 @@ local function createSpecFrame()
         align = "middle"
     })
     frame:SetFullWidth(true)
-    frame:SetHeight(0)
+    frame:SetHeight(370)
     frame:SetAutoAdjustHeight(false)
     main_frame:AddChild(frame)
     spec_frame = frame
@@ -396,6 +396,52 @@ function BistooltipAddon:reloadData()
     end
 end
 
+function BistooltipAddon:OpenDiscordLink()
+    BistooltipAddon:closeMainFrame()
+    StaticPopup_Show("DISCORD_LINK_DIALOG")
+    StaticPopupDialogs["DISCORD_LINK_DIALOG"].preferredIndex = 4
+end
+
+StaticPopupDialogs["DISCORD_LINK_DIALOG"] = {
+    text = "Join our Discord",
+    button1 = "Copy Link",
+    button2 = "Close",
+    OnShow = function(self)
+        self.editBox:SetText("https://discord.gg/Xk8BKqSapd")
+        self.editBox:SetFocus()
+        self.editBox:HighlightText()
+    end,
+    timeout = 0,
+    whileDead = true,
+    hideOnEscape = true,
+    preferredIndex = 4,
+    hasEditBox = true,
+    EditBoxOnEscapePressed = function(self)
+        self:GetParent():Hide()
+    end,
+    EditBoxOnEnterPressed = function(self)
+        self:GetParent().button1:Click()
+    end,
+    OnHide = function(self)
+        self.data = nil
+    end,
+    EditBoxOnTextChanged = function(self, userInput)
+        if userInput then
+            self:SetText(self.data)
+            self:HighlightText()
+        end
+    end,
+    OnAccept = function(self)
+        self.editBox:SetFocus()
+        self.editBox:HighlightText()
+        self.editBox:CopyText()
+        self:Hide()
+    end,
+    OnCancel = function(self)
+        self:Hide()
+    end
+}
+
 function BistooltipAddon:createMainFrame()
     if main_frame then
         BistooltipAddon:closeMainFrame()
@@ -404,6 +450,7 @@ function BistooltipAddon:createMainFrame()
 
     main_frame = AceGUI:Create("Frame")
     main_frame:SetWidth(450)
+    main_frame:SetHeight(550) -- Adjust the height here as needed
     main_frame.frame:SetMinResize(450, 300)
     main_frame.frame:SetMaxResize(800, 600)
 
@@ -439,6 +486,15 @@ function BistooltipAddon:createMainFrame()
 
     -- Add the button to the container first
     buttonContainer:AddChild(reloadButton)
+
+    -- Create the Discord button
+    local discordButton = AceGUI:Create("Button")
+    discordButton:SetText("Join our Discord")
+    discordButton:SetWidth(120)
+    discordButton:SetCallback("OnClick", function()
+        BistooltipAddon:OpenDiscordLink()
+    end)
+    buttonContainer:AddChild(discordButton)
 
     -- Create the note label
     local noteLabel = AceGUI:Create("Label")
