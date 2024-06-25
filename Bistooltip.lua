@@ -1,4 +1,3 @@
--- local LibExtraTip = LibStub:GetLibrary("LibExtraTip-1");
 local eventFrame = CreateFrame("Frame", nil, UIParent)
 Bistooltip_phases_string = ""
 
@@ -50,93 +49,85 @@ local function printSpecLine(tooltip, slot, class_name, spec_name)
     if (slot_name == "Off hand" or slot_name == "Weapon" or slot_name == "Weapon 1h" or slot_name == "Weapon 2h") then
         left_text = left_text .. " (" .. slot_name .. ")"
     end
-    local color_r = 1
-    local color_g = 0.8
-    local color_b = 0
-    if specHighlighted(class_name, spec_name) then
-        color_r = 0.074
-        color_g = 0.964
-        color_b = 0.129
-    end
-    LibExtraTip:AddDoubleLine(tooltip, left_text, slot_ranks, color_r, color_g, color_b, color_r, color_g, color_b,
-        false)
+    tooltip:AddDoubleLine(left_text, slot_ranks, 1, 0.8, 0)
 end
 
 local function printClassName(tooltip, class_name)
-    LibExtraTip:AddLine(tooltip, class_name, 1, 0.8, 0, false)
+    tooltip:AddLine(class_name, 1, 0.8, 0)
 end
 
 local function OnGameTooltipSetItem(tooltip)
     if BistooltipAddon.db.char.tooltip_with_ctrl and not IsControlKeyDown() then
         return
     end
-    local _, link = tooltip:GetItem();
 
-    if link == nil then
-        return;
+    local _, link = tooltip:GetItem()
+    if not link then
+        return
     end
 
     local _, itemId, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", link)
+    itemId = tonumber(itemId)
 
-    itemId = tonumber(itemId);
-    if Bistooltip_items[itemId] == nil then
-        return;
+    if not Bistooltip_items[itemId] then
+        return
     end
+
     local item = Bistooltip_items[itemId]
     local specs_count = #item
     item = getFilteredItem(item)
+
     if (#item > 0) then
-        LibExtraTip:AddDoubleLine(tooltip, "Spec name", Bistooltip_phases_string, 1, 1, 0, 1, 1, 0, false)
+        tooltip:AddDoubleLine("Spec name", Bistooltip_phases_string, 1, 1, 0, 1, 1, 0)
     else
         return
     end
+
     local previous_class = nil
+
     for ki, spec in ipairs(item) do
         local class_name = spec.class_name
         local spec_name = spec.spec_name
         local slots = spec.slots
-        for ks, slot in ipairs(slots) do
-            if (not classNamesFiltered()) then
-                if not (previous_class == class_name) then
-                    printClassName(tooltip, class_name)
-                    previous_class = class_name
-                end
+
+        if (not classNamesFiltered()) then
+            if not (previous_class == class_name) then
+                printClassName(tooltip, class_name)
+                previous_class = class_name
             end
+        end
+
+        for ks, slot in ipairs(slots) do
             printSpecLine(tooltip, slot, class_name, spec_name)
         end
     end
+
     if #item > 0 and Bistooltip_char_equipment[itemId] ~= nil then
-        LibExtraTip:AddLine(tooltip, " ", 1, 1, 0, false)
+        tooltip:AddLine(" ", 1, 1, 0)
         if Bistooltip_char_equipment[itemId] == 2 then
-            LibExtraTip:AddLine(tooltip, "You have this item equipped", 0.074, 0.964, 0.129, false)
+            tooltip:AddLine("You have this item equipped", 0.074, 0.964, 0.129)
         else
-            LibExtraTip:AddLine(tooltip, "You have this item in your inventory", 0.074, 0.964, 0.129, false)
+            tooltip:AddLine("You have this item in your inventory", 0.074, 0.964, 0.129)
         end
     end
+
     if not (#item == specs_count) then
         if (#item > 0) then
-            LibExtraTip:AddLine(tooltip, " ", 1, 1, 0, false)
+            tooltip:AddLine(" ", 1, 1, 0)
         end
-        LibExtraTip:AddLine(tooltip, "Hold ALT to disable spec filtering", 0.6, 0.6, 0.6, false)
+        tooltip:AddLine("Hold ALT to disable spec filtering", 0.6, 0.6, 0.6)
     end
 end
 
 function BistooltipAddon:initBisTooltip()
-    -- LibExtraTip:AddCallback({
-    --     type = "item",
-    --     callback = OnGameTooltipSetItem,
-    --     allevents = true
-    -- })
-    -- LibExtraTip:RegisterTooltip(GameTooltip);
-    -- LibExtraTip:RegisterTooltip(ItemRefTooltip);
-    eventFrame:RegisterEvent("MODIFIER_STATE_CHANGED");
+    eventFrame:RegisterEvent("MODIFIER_STATE_CHANGED")
     eventFrame:SetScript("OnEvent", function(_, _, e_key, _, _)
-        if (GameTooltip:GetOwner()) then
-            if (GameTooltip:GetOwner().hasItem) then
+        if GameTooltip:GetOwner() then
+            if GameTooltip:GetOwner().hasItem then
                 return
             end
 
-            if (e_key == "RALT" or e_key == "LALT") then
+            if e_key == "RALT" or e_key == "LALT" then
                 local _, link = GameTooltip:GetItem()
                 if link then
                     GameTooltip:SetHyperlink("|cff9d9d9d|Hitem:3299::::::::20:257::::::|h[Fractured Canine]|h|r")
@@ -145,4 +136,7 @@ function BistooltipAddon:initBisTooltip()
             end
         end
     end)
+
+    GameTooltip:HookScript("OnTooltipSetItem", OnGameTooltipSetItem)
+    ItemRefTooltip:HookScript("OnTooltipSetItem", OnGameTooltipSetItem)
 end
