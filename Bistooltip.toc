@@ -9,7 +9,7 @@
 
 # Libs.
 lib\LibStub\LibStub.lua
-lib\LibExtraTip\LibExtraTip.lua
+#lib\LibExtraTip\LibExtraTip.lua
 lib\CallbackHandler-1.0\CallbackHandler-1.0.lua
 lib\LibDataBroker-1.1\LibDataBroker-1.1.lua
 lib\LibDBIcon-1.0\LibDBIcon-1.0.lua

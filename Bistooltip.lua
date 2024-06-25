@@ -1,10 +1,10 @@
-local LibExtraTip = LibStub:GetLibrary("LibExtraTip-1");
+-- local LibExtraTip = LibStub:GetLibrary("LibExtraTip-1");
 local eventFrame = CreateFrame("Frame", nil, UIParent)
 Bistooltip_phases_string = ""
 
 local function specHighlighted(class_name, spec_name)
-    return (BistooltipAddon.db.char.highlight_spec.spec_name == spec_name
-            and BistooltipAddon.db.char.highlight_spec.class_name == class_name)
+    return (BistooltipAddon.db.char.highlight_spec.spec_name == spec_name and
+               BistooltipAddon.db.char.highlight_spec.class_name == class_name)
 end
 
 local function specFiltered(class_name, spec_name)
@@ -58,11 +58,8 @@ local function printSpecLine(tooltip, slot, class_name, spec_name)
         color_g = 0.964
         color_b = 0.129
     end
-    LibExtraTip:AddDoubleLine(
-            tooltip, left_text, slot_ranks,
-            color_r, color_g, color_b,
-            color_r, color_g, color_b,
-            false)
+    LibExtraTip:AddDoubleLine(tooltip, left_text, slot_ranks, color_r, color_g, color_b, color_r, color_g, color_b,
+        false)
 end
 
 local function printClassName(tooltip, class_name)
@@ -76,14 +73,14 @@ local function OnGameTooltipSetItem(tooltip)
     local _, link = tooltip:GetItem();
 
     if link == nil then
-        return ;
+        return;
     end
 
     local _, itemId, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", link)
 
     itemId = tonumber(itemId);
     if Bistooltip_items[itemId] == nil then
-        return ;
+        return;
     end
     local item = Bistooltip_items[itemId]
     local specs_count = #item
@@ -125,9 +122,13 @@ local function OnGameTooltipSetItem(tooltip)
 end
 
 function BistooltipAddon:initBisTooltip()
-    LibExtraTip:AddCallback({ type = "item", callback = OnGameTooltipSetItem, allevents = true })
-    LibExtraTip:RegisterTooltip(GameTooltip);
-    LibExtraTip:RegisterTooltip(ItemRefTooltip);
+    -- LibExtraTip:AddCallback({
+    --     type = "item",
+    --     callback = OnGameTooltipSetItem,
+    --     allevents = true
+    -- })
+    -- LibExtraTip:RegisterTooltip(GameTooltip);
+    -- LibExtraTip:RegisterTooltip(ItemRefTooltip);
     eventFrame:RegisterEvent("MODIFIER_STATE_CHANGED");
     eventFrame:SetScript("OnEvent", function(_, _, e_key, _, _)
         if (GameTooltip:GetOwner()) then

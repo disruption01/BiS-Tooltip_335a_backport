@@ -175,9 +175,6 @@ local function drawItemSlot(slot)
             if translated_item_id then
                 item_id = translated_item_id
             end
-        else
-            -- Print an error message if Bistooltip_horde_to_ali is nil
-            print("Bistooltip_horde_to_ali is nil or not defined.")
         end
 
         -- Check if the item_id is valid and exists in Bistooltip_char_equipment
@@ -445,8 +442,11 @@ function BistooltipAddon:createMainFrame()
 
     -- Create the note label
     local noteLabel = AceGUI:Create("Label")
-    noteLabel:SetText("Click reload data if you can't see all the items")
+    noteLabel:SetText("Sometimes servers don't allow to query too many items so keep reloading and reopening the addon.")
     noteLabel:SetWidth(250) -- Adjust width to fit the note text
+
+    -- Set font size and font type
+    noteLabel:SetFont(GameFontNormal:GetFont(), 9)
 
     -- Create a spacer label to act as left margin
     local spacerLabel = AceGUI:Create("Label")
