@@ -498,7 +498,7 @@ function BistooltipAddon:createMainFrame()
     -- Create the Discord button
     local discordButton = AceGUI:Create("Button")
     discordButton:SetText("Join our Discord")
-    discordButton:SetWidth(120)
+    discordButton:SetWidth(140)
     discordButton:SetCallback("OnClick", function()
         BistooltipAddon:OpenDiscordLink()
     end)
