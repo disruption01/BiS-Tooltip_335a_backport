@@ -6,12 +6,12 @@ local icon_loaded = false
 local icon_name = "BisTooltipIcon"
 
 local sources = {
-    wh = "wh",
+    --    wh = "wh",
     wowtbc = "wowtbc"
 }
 
 Bistooltip_source_to_url = {
-    ["wh"] = "wowhead.com/wotlk",
+    --    ["wh"] = "wowhead.com/wotlk",
     ["wowtbc"] = "wowtbc.gg/wotlk"
 }
 

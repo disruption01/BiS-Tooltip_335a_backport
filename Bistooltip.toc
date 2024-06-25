@@ -22,8 +22,12 @@ lib\Ace3\AceConfig-3.0\AceConfig-3.0.xml
 Bistooltip_classes.lua
 Bistooltip_wowtbc_items.lua
 Bistooltip_wowtbc_bislists.lua
+Bistooltip_wowtbc_items_old.lua
+Bistooltip_wowtbc_bislists_old.lua
 Bistooltip_wh_items.lua
 Bistooltip_wh_bislists.lua
+Bistooltip_wh_items_old.lua
+Bistooltip_wh_bislists_old.lua
 Bistooltip_horde_to_ali.lua
 Core.lua
 Config.lua

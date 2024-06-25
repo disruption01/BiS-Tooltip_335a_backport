@@ -62,7 +62,7 @@ Bistooltip_wh_classes[10] = { ["name"] = "Warlock", ["specs"] = {
     [3] = "Destruction"
 }};
 
-Bistooltip_wh_phases = { "PR", "T9", "T10" };
+Bistooltip_wh_phases = { "PR", "T7", "T8", "T9", "T10" };
 
 Bistooltip_wh_bislists["Death knight"]["Blood tank"] = {};
 Bistooltip_wh_bislists["Death knight"]["Blood tank"]["PR"] = {};
