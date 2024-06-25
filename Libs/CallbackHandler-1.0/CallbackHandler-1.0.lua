@@ -1,5 +1,5 @@
---[[ $Id: CallbackHandler-1.0.lua 1186 2018-07-21 14:19:18Z nevcairiel $ ]]
-local MAJOR, MINOR = "CallbackHandler-1.0", 7
+--[[ $Id: CallbackHandler-1.0.lua 895 2009-12-06 16:28:55Z nevcairiel $ ]]
+local MAJOR, MINOR = "CallbackHandler-1.0", 5
 local CallbackHandler = LibStub:NewLibrary(MAJOR, MINOR)
 
 if not CallbackHandler then return end -- No upgrade needed
@@ -22,14 +22,40 @@ local function errorhandler(err)
 	return geterrorhandler()(err)
 end
 
-local function Dispatch(handlers, ...)
-	local index, method = next(handlers)
-	if not method then return end
-	repeat
-		xpcall(method, errorhandler, ...)
-		index, method = next(handlers, index)
-	until not method
+local function CreateDispatcher(argCount)
+	local code = [[
+	local next, xpcall, eh = ...
+
+	local method, ARGS
+	local function call() method(ARGS) end
+
+	local function dispatch(handlers, ...)
+		local index
+		index, method = next(handlers)
+		if not method then return end
+		local OLD_ARGS = ARGS
+		ARGS = ...
+		repeat
+			xpcall(call, eh)
+			index, method = next(handlers, index)
+		until not method
+		ARGS = OLD_ARGS
+	end
+
+	return dispatch
+	]]
+
+	local ARGS, OLD_ARGS = {}, {}
+	for i = 1, argCount do ARGS[i], OLD_ARGS[i] = "arg"..i, "old_arg"..i end
+	code = code:gsub("OLD_ARGS", tconcat(OLD_ARGS, ", ")):gsub("ARGS", tconcat(ARGS, ", "))
+	return assert(loadstring(code, "safecall Dispatcher["..argCount.."]"))(next, xpcall, errorhandler)
 end
+
+local Dispatchers = setmetatable({}, {__index=function(self, argCount)
+	local dispatcher = CreateDispatcher(argCount)
+	rawset(self, argCount, dispatcher)
+	return dispatcher
+end})
 
 --------------------------------------------------------------------------
 -- CallbackHandler:New
@@ -39,7 +65,9 @@ end
 --   UnregisterName    - name of the callback unregistration API, default "UnregisterCallback"
 --   UnregisterAllName - name of the API to unregister all callbacks, default "UnregisterAllCallbacks". false == don't publish this API.
 
-function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAllName)
+function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAllName, OnUsed, OnUnused)
+	-- TODO: Remove this after beta has gone out
+	assert(not OnUsed and not OnUnused, "ACE-80: OnUsed/OnUnused are deprecated. Callbacks are now done to registry.OnUsed and registry.OnUnused")
 
 	RegisterName = RegisterName or "RegisterCallback"
 	UnregisterName = UnregisterName or "UnregisterCallback"
@@ -61,7 +89,7 @@ function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAll
 		local oldrecurse = registry.recurse
 		registry.recurse = oldrecurse + 1
 
-		Dispatch(events[eventname], eventname, ...)
+		Dispatchers[select('#', ...) + 1](events[eventname], eventname, ...)
 
 		registry.recurse = oldrecurse
 
@@ -119,9 +147,9 @@ function CallbackHandler:New(target, RegisterName, UnregisterName, UnregisterAll
 				regfunc = function(...) self[method](self,...) end
 			end
 		else
-			-- function ref with self=object or self="addonId" or self=thread
-			if type(self)~="table" and type(self)~="string" and type(self)~="thread" then
-				error("Usage: "..RegisterName.."(self or \"addonId\", eventname, method): 'self or addonId': table or string or thread expected.", 2)
+			-- function ref with self=object or self="addonId"
+			if type(self)~="table" and type(self)~="string" then
+				error("Usage: "..RegisterName.."(self or \"addonId\", eventname, method): 'self or addonId': table or string expected.", 2)
 			end
 
 			if select("#",...)>=1 then	-- this is not the same as testing for arg==nil!
