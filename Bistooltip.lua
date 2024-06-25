@@ -93,6 +93,7 @@ end
 -- Define your search function without debug prints
 function searchIDInBislistsClassSpec(structure, id, class, spec)
     local paths = {}
+    local seen = {} -- To track unique phase labels
 
     -- Sort phases according to Bistooltip_wowtbc_phases order
     local sortedPhases = {}
@@ -118,9 +119,10 @@ function searchIDInBislistsClassSpec(structure, id, class, spec)
                             phaseLabel = phase .. " alt " .. i
                         end
 
-                        -- Add phase label to paths if not already present
-                        if not table.contains(paths, phaseLabel) then
+                        -- Add phase label to paths if not already seen
+                        if not seen[phaseLabel] then
                             table.insert(paths, phaseLabel)
+                            seen[phaseLabel] = true
                         end
                     end
                 end
