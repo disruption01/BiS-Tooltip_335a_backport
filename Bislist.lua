@@ -27,39 +27,32 @@ local boemarks = {}
 local isHorde = UnitFactionGroup("player") == "Horde"
 
 local function createItemFrame(item_id, size, with_checkmark)
-    -- Check for invalid item_id and return a label if invalid
     if item_id < 0 then
-        local f = AceGUI:Create("Label")
-        return f
+        return AceGUI:Create("Label")
     end
 
     local item_frame = AceGUI:Create("Icon")
     item_frame:SetImageSize(size, size)
 
-    -- Retrieve item info directly using GetItemInfo
-    local itemName, itemLink, _, _, _, _, _, _, _, itemIcon, _, itemType, _, bindType = GetItemInfo(item_id)
-
-    -- If item info is not retrievable, set a default icon and return the frame
-    if not itemName then
-        -- Set a default question mark icon
-        item_frame:SetImage("Interface\\Icons\\INV_Misc_QuestionMark")
-        return item_frame
-    end
-
-    -- Check if the item_id should be translated using Bistooltip_horde_to_ali
     local aliItemID
     if Bistooltip_horde_to_ali then
         aliItemID = Bistooltip_horde_to_ali[item_id]
     end
 
-    -- If translation exists, retrieve item info for the Alliance equivalent item ID
     if aliItemID then
-        itemName, itemLink, _, _, _, _, _, _, _, itemIcon, _, itemType, _, bindType = GetItemInfo(aliItemID)
+        item_id = aliItemID
+    end
+
+    GameTooltip:SetHyperlink("item:" .. item_id .. ":0:0:0:0:0:0:0")
+    local itemName, itemLink, _, _, _, _, _, _, _, itemIcon, _, itemType, _, bindType = GetItemInfo(item_id)
+
+    if not itemName then
+        item_frame:SetImage("Interface\\Icons\\INV_Misc_QuestionMark")
+        return item_frame
     end
 
     item_frame:SetImage(itemIcon)
 
-    -- Add a checkmark if required
     if with_checkmark then
         local checkMark = item_frame.frame:CreateTexture(nil, "OVERLAY")
         checkMark:SetWidth(32)
@@ -69,8 +62,7 @@ local function createItemFrame(item_id, size, with_checkmark)
         table.insert(checkmarks, checkMark)
     end
 
-    -- Check if the item is Bind on Equip (BoE)
-    if bindType == 2 then -- 2 indicates Bind on Equip
+    if bindType == 2 then
         local boeMark = item_frame.frame:CreateTexture(nil, "OVERLAY")
         boeMark:SetWidth(12)
         boeMark:SetHeight(12)
@@ -79,7 +71,6 @@ local function createItemFrame(item_id, size, with_checkmark)
         table.insert(boemarks, boeMark)
     end
 
-    -- Set callbacks for interaction
     item_frame:SetCallback("OnClick", function(button)
         SetItemRef(itemLink, itemLink, "LeftButton")
     end)
@@ -413,17 +404,11 @@ function BistooltipAddon:createMainFrame()
         BistooltipAddon:closeMainFrame()
         return
     end
+
     main_frame = AceGUI:Create("Frame")
     main_frame:SetWidth(450)
-    main_frame.frame:SetMinResize(450, 300) -- Use SetMinResize instead of SetResizeBounds
-    main_frame.frame:SetMaxResize(800, 600) -- Add SetMaxResize if needed
-
-    -- main_frame.frame:SetScript("OnKeyDown", function(self, key)
-    --    if key == "ESCAPE" then
-    --        BistooltipAddon:closeMainFrame()
-    --    end
-    -- end)
-    -- main_frame.frame:SetPropagateKeyboardInput(false)
+    main_frame.frame:SetMinResize(450, 300)
+    main_frame.frame:SetMaxResize(800, 600)
 
     main_frame:SetCallback("OnClose", function(widget)
         clearCheckMarks()
@@ -437,9 +422,56 @@ function BistooltipAddon:createMainFrame()
     main_frame:SetLayout("List")
     main_frame:SetTitle(BistooltipAddon.AddonNameAndVersion)
     main_frame:SetStatusText(Bistooltip_source_to_url[BistooltipAddon.db.char["data_source"]])
+
     drawDropdowns()
     createSpecFrame()
     drawSpecData()
+
+    -- Create a container to hold the button and the note label
+    local buttonContainer = AceGUI:Create("SimpleGroup")
+    buttonContainer:SetFullWidth(true)
+    buttonContainer:SetLayout("Flow")
+
+    -- Create the reload button
+    local reloadButton = AceGUI:Create("Button")
+    reloadButton:SetText("Reload Data")
+    reloadButton:SetWidth(120) -- Set a reasonable width for the button
+    reloadButton:SetCallback("OnClick", function()
+        BistooltipAddon:reloadData()
+    end)
+
+    -- Add the button to the container first
+    buttonContainer:AddChild(reloadButton)
+
+    -- Create the note label
+    local noteLabel = AceGUI:Create("Label")
+    noteLabel:SetText("Click reload data if you can't see all the items")
+    noteLabel:SetWidth(250) -- Adjust width to fit the note text
+
+    -- Create a spacer label to act as left margin
+    local spacerLabel = AceGUI:Create("Label")
+    spacerLabel:SetWidth(20) -- This sets the margin between button and label
+    buttonContainer:AddChild(spacerLabel)
+
+    -- Add the note label to the container
+    buttonContainer:AddChild(noteLabel)
+
+    -- Set the height of the noteLabel and align its text to the bottom
+    noteLabel:SetHeight(reloadButton.frame:GetHeight())
+    noteLabel:SetFullWidth(false)
+    noteLabel:SetJustifyH("LEFT")
+
+    -- Adjust the noteLabel's text frame to position it at the bottom
+    noteLabel.label:SetPoint("BOTTOM")
+
+    -- Add some space before the container to ensure it's at the bottom
+    local spacer = AceGUI:Create("Label")
+    spacer:SetFullWidth(true)
+    spacer:SetText(" ")
+
+    -- Add the spacer and button container to the main frame
+    main_frame:AddChild(spacer)
+    main_frame:AddChild(buttonContainer)
 end
 
 function BistooltipAddon:closeMainFrame()
