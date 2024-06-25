@@ -115,7 +115,7 @@ function searchIDInBislistsClassSpec(structure, id, class, spec)
                         if i == 1 then
                             phaseLabel = phase .. " BIS"
                         else
-                            phaseLabel = phase .. " ALT " .. i
+                            phaseLabel = phase .. " alt " .. i
                         end
 
                         -- Add phase label to paths if not already present
@@ -181,7 +181,7 @@ local function OnGameTooltipSetItem(tooltip)
         return
     end
 
-    tooltip:AddDoubleLine("Spec Name", "Phase", 1, 1, 0, 1, 1, 0)
+    tooltip:AddDoubleLine("Spec Name", "Phase", 1, 1, 1, 1, 1, 1)
 
     -- -- Iterate through each class and specialization
     for class, specs in caseInsensitivePairs(Bistooltip_spec_icons) do
