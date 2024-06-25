@@ -94,9 +94,18 @@ end
 function searchIDInBislistsClassSpec(structure, id, class, spec)
     local paths = {}
 
-    local specs = structure[class][spec] -- Access the specified class and spec
+    -- Sort phases according to Bistooltip_wowtbc_phases order
+    local sortedPhases = {}
+    for _, phase in ipairs(Bistooltip_wowtbc_phases) do
+        if structure[class] and structure[class][spec] and structure[class][spec][phase] then
+            table.insert(sortedPhases, phase)
+        end
+    end
 
-    for phase, items in pairs(specs) do
+    -- Iterate over sorted phases
+    for _, phase in ipairs(sortedPhases) do
+        local items = structure[class][spec][phase]
+
         for index, itemData in pairs(items) do
             if type(itemData) == "table" and itemData[1] then
                 for i, itemId in ipairs(itemData) do
@@ -106,7 +115,7 @@ function searchIDInBislistsClassSpec(structure, id, class, spec)
                         if i == 1 then
                             phaseLabel = phase .. " BIS"
                         else
-                            phaseLabel = phase .. " alt " .. i
+                            phaseLabel = phase .. " ALT " .. i
                         end
 
                         -- Add phase label to paths if not already present
