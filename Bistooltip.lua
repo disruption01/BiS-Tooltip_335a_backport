@@ -183,7 +183,7 @@ local function OnGameTooltipSetItem(tooltip)
         return
     end
 
-    tooltip:AddDoubleLine("Spec Name", "Phase", 1, 1, 1, 1, 1, 1)
+    -- tooltip:AddDoubleLine("Spec Name", "Phase", 1, 1, 1, 1, 1, 1)
 
     -- -- Iterate through each class and specialization
     for class, specs in caseInsensitivePairs(Bistooltip_spec_icons) do
@@ -208,17 +208,17 @@ local function OnGameTooltipSetItem(tooltip)
         end
     end
 
-    if Bistooltip_char_equipment and Bistooltip_char_equipment[itemId] ~= nil then
-        tooltip:AddLine(" ", 1, 1, 0)
-        if Bistooltip_char_equipment[itemId] == 2 then
-            tooltip:AddLine("You have this item equipped", 0.074, 0.964, 0.129)
-        else
-            tooltip:AddLine("You have this item in your inventory", 0.074, 0.964, 0.129)
-        end
-    end
+    -- if Bistooltip_char_equipment and Bistooltip_char_equipment[itemId] ~= nil then
+    --     tooltip:AddLine(" ", 1, 1, 0)
+    --     if Bistooltip_char_equipment[itemId] == 2 then
+    --         tooltip:AddLine("You have this item equipped", 0.074, 0.964, 0.129)
+    --     else
+    --         tooltip:AddLine("You have this item in your inventory", 0.074, 0.964, 0.129)
+    --     end
+    -- end
 
-    tooltip:AddLine(" ", 1, 1, 0)
-    tooltip:AddLine("Hold ALT to disable spec filtering", 0.6, 0.6, 0.6)
+    -- tooltip:AddLine(" ", 1, 1, 0)
+    -- tooltip:AddLine("Hold ALT to disable spec filtering", 0.6, 0.6, 0.6)
 end
 
 function BistooltipAddon:initBisTooltip()
