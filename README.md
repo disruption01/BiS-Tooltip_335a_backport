@@ -1,1 +1,1 @@
-This is a work in progress based on the 3.4.3 version from wotlk classic
+Backport of the addon BiS-Tooltip for 3.3.5a https://www.curseforge.com/wow/addons/bis-tooltip
