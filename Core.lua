@@ -2,6 +2,32 @@ BistooltipAddon = LibStub("AceAddon-3.0"):NewAddon("Bis-Tooltip")
 
 Bistooltip_char_equipment = {}
 
+local function collectItemIDs(bislists)
+    local itemIDs = {}
+
+    for _, classData in pairs(bislists) do
+        for _, specData in pairs(classData) do
+            for _, phaseData in pairs(specData) do
+                for _, itemData in ipairs(phaseData) do
+                    for key, value in pairs(itemData) do
+                        if type(key) == "number" then
+                            table.insert(itemIDs, value)
+                        elseif key == "enhs" then
+                            for _, enhData in pairs(value) do
+                                if enhData.type == "item" and enhData.id then
+                                    table.insert(itemIDs, enhData.id)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
+
+    return itemIDs
+end
+
 local function createEquipmentWatcher()
     local frame = CreateFrame("Frame")
     frame:Hide()
@@ -50,6 +76,15 @@ local function createEquipmentWatcher()
                 local itemID = GetInventoryItemID("player", i)
                 if itemID then
                     collection[itemID] = 2 -- Item is equipped
+                end
+            end
+
+            -- Check items using GetItemCount
+            local itemIDs = collectItemIDs(Bistooltip_bislists)
+            for _, itemID in ipairs(itemIDs) do
+                local count = GetItemCount(itemID, true) -- true includes the bank
+                if count > 0 then
+                    collection[itemID] = 1 -- Store the item count
                 end
             end
 

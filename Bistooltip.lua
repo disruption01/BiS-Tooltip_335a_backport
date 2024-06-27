@@ -56,40 +56,6 @@ local function printClassName(tooltip, class_name)
     tooltip:AddLine(class_name, 1, 0.8, 0)
 end
 
--- Function to search for item in bislists and return phases
-function searchIDInBislists(structure, id)
-    print("Debug: Searching for id " .. id)
-    local paths = {}
-
-    for class, specs in pairs(structure) do
-        print("Debug: Class " .. class)
-        for spec, phases in pairs(specs) do
-            print("Debug: Spec " .. spec)
-            for phase, items in pairs(phases) do
-                print("Debug: Phase " .. phase)
-                for index, itemData in pairs(items) do
-                    if type(itemData) == "table" and itemData[1] then
-                        for i, itemId in ipairs(itemData) do
-                            if i ~= "slot_name" and i ~= "enhs" and itemId == id then
-                                local path = class .. " - " .. spec .. " - " .. phase .. " " .. i
-                                table.insert(paths, path)
-                                print("Debug: Found item id " .. id .. " at " .. path)
-                            end
-                        end
-                    end
-                end
-            end
-        end
-    end
-
-    if #paths > 0 then
-        return paths
-    else
-        print("Debug: Item id " .. id .. " not found")
-        return nil
-    end
-end
-
 -- Define your search function without debug prints
 function searchIDInBislistsClassSpec(structure, id, class, spec)
     local paths = {}
@@ -164,22 +130,18 @@ end
 local function OnGameTooltipSetItem(tooltip)
     -- print("Debug: OnGameTooltipSetItem called")
     if BistooltipAddon.db.char.tooltip_with_ctrl and not IsControlKeyDown() then
-        -- print("Debug: Control key not pressed, exiting")
         return
     end
 
     local _, link = tooltip:GetItem()
     if not link then
-        -- print("Debug: No item link found, exiting")
         return
     end
 
     local _, itemId, _, _, _, _, _, _, _, _, _, _, _, _ = strsplit(":", link)
     itemId = tonumber(itemId)
-    -- print("Debug: Item ID is " .. tostring(itemId))
 
     if not itemId then
-        -- print("Debug: Invalid item ID, exiting")
         return
     end
 
