@@ -4,6 +4,8 @@ local LDB = LibStub("LibDataBroker-1.1", true)
 local LDBIcon = LDB and LibStub("LibDBIcon-1.0", true)
 local icon_loaded = false
 local icon_name = "BisTooltipIcon"
+-- local DataStore = LibStub("DataStore")
+-- local DataStore_Inventory = LibStub("DataStore_Inventory")
 
 local sources = {
     wowtbc = "wowtbc"

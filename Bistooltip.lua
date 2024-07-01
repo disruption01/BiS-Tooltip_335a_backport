@@ -126,6 +126,71 @@ local function getStringLength(str)
     return string.len(string.gsub(str, "|c%x%x%x%x%x%x%x%x", ""):gsub("|r", ""))
 end
 
+function table.contains(table, element)
+    for _, value in pairs(table) do
+        if value == element then
+            return true
+        end
+    end
+    return false
+end
+
+-- Initialize DataStore_Inventory as a local variable
+local DataStore_Inventory = DataStore_Inventory or nil
+
+local function GetItemSource(itemId)
+    local source
+
+    -- Function to replace specific instance names
+    local function formatInstanceName(instance)
+        -- Normalize instance name for comparison (if needed)
+        local tmpInstance = string.lower(instance)
+
+        -- Replace "The Obsidian Sanctum(Heroic)" with "The Obsidian Sanctum(25)"
+
+        if tmpInstance == "the obsidian sanctum (heroic)" then
+            instance = "The Obsidian Sanctum(25)"
+        elseif tmpInstance == "the eye of eternity (heroic)" then
+            instance = "The Eye Of Eternity (25)"
+        elseif tmpInstance == "naxxramas (heroic)" then
+            instance = "Naxxramas (25)"
+        elseif tmpInstance == "ulduar (heroic)" then
+            instance = "Ulduar (25)"
+        end
+
+        return instance
+    end
+
+    -- First, check the lootTable (assuming lootTable is defined somewhere)
+    for zone, bosses in pairs(lootTable) do
+        for boss, items in pairs(bosses) do
+            if table.contains(items, itemId) then
+                local formattedZone = formatInstanceName(zone)
+                source = "|cFFFFFFFFSource:|r |cFF00FF00[" .. formattedZone .. "] - " .. boss .. "|r"
+                break
+            end
+        end
+        if source then
+            break
+        end
+    end
+
+    -- If not found in lootTable, fallback to DataStore_Inventory (example usage)
+    if not source then
+        -- Replace with your logic to load DataStore_Inventory and get source
+        local Instance, Boss = DataStore_Inventory:GetSource(itemId)
+        if Instance and Boss then
+            local formattedInstance = formatInstanceName(Instance)
+            source = "|cFFFFFFFFSource:|r |cFF00FF00[" .. formattedInstance .. "] - " .. Boss .. "|r"
+        else
+            print("Unable to retrieve source for item ID:", itemId)
+            return nil
+        end
+    end
+
+    return source
+end
+
 -- Function to handle item tooltip
 local function OnGameTooltipSetItem(tooltip)
     -- print("Debug: OnGameTooltipSetItem called")
@@ -181,6 +246,15 @@ local function OnGameTooltipSetItem(tooltip)
 
     -- tooltip:AddLine(" ", 1, 1, 0)
     -- tooltip:AddLine("Hold ALT to disable spec filtering", 0.6, 0.6, 0.6)
+
+    tooltip:AddLine(" ", 1, 1, 0)
+    -- Fetch item source information
+    local itemSource = GetItemSource(itemId)
+
+    -- Add item source information to tooltip if available
+    if itemSource then
+        tooltip:AddLine(itemSource, 1, 1, 1)
+    end
 end
 
 function BistooltipAddon:initBisTooltip()

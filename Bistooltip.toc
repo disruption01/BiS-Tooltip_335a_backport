@@ -5,7 +5,7 @@
 ## Author: Silver
 ## Version: 1.0.0-3.3.5a
 ## SavedVariables: BisTooltipDB
-## OptionalDeps: Ace3
+## OptionalDeps: Ace3, DataStore, DataStore_Inventory
 
 Libs\LibStub\LibStub.lua
 Libs\LibParse\LibParse.lua
@@ -20,6 +20,7 @@ Libs\AceConfig-3.0\AceConfig-3.0.xml
 Libs\LibDataBroker\LibDataBroker-1.1.lua
 Libs\LibDBIcon-1.0\LibDBIcon-1.0.lua
 
+Loot_Sources.lua
 Bistooltip_classes.lua
 #Bistooltip_wowtbc_items.lua
 Bistooltip_wowtbc_bislists.lua
