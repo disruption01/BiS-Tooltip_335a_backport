@@ -246,13 +246,14 @@ local function OnGameTooltipSetItem(tooltip)
     -- tooltip:AddLine(" ", 1, 1, 0)
     -- tooltip:AddLine("Hold ALT to disable spec filtering", 0.6, 0.6, 0.6)
 
-    tooltip:AddLine(" ", 1, 1, 0)
     -- Fetch item source information
     local itemSource = GetItemSource(itemId)
 
     -- Add item source information to tooltip if available
     if itemSource then
+        tooltip:AddLine(" ", 1, 1, 0)
         tooltip:AddLine(itemSource, 1, 1, 1)
+        tooltip:AddLine(" ", 1, 1, 0)
     end
 end
 
