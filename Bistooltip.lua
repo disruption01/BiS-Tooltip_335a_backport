@@ -183,7 +183,6 @@ local function GetItemSource(itemId)
             local formattedInstance = formatInstanceName(Instance)
             source = "|cFFFFFFFFSource:|r |cFF00FF00[" .. formattedInstance .. "] - " .. Boss .. "|r"
         else
-            print("Unable to retrieve source for item ID:", itemId)
             return nil
         end
     end
